@@ -15,7 +15,7 @@ cv2.circle(img, (220,250), 30, (0,255,255), -1)  # 노란색(Yellow) 원, 내부
 cv2.ellipse(img, (100, 400), (75, 50), 0, 0, 360, (0,255,0), 3) # 초록색(Green) 타원, 중심, 축, 각도, 두께 3
 
 pts = np.array([[220,350], [180,500], [260,500]], dtype=np.int32) # 다각형 꼭짓점 좌표 배열
-cv2.polylines(img, [pts], False, (255,0,0), 10) # 파란색(Blue) 폴리라인, 닫지 않음(False), 두께 10
+cv2.polylines(img, [pts], True, (255,0,0), 10) # 파란색(Blue) 폴리라인, 닫지 않음(False), 두께 10
 #3False : 마지막점과 첫점을 연결할 것인가?
 
 cv2.putText(img, "text1", (50,500), cv2.FONT_HERSHEY_DUPLEX, 1, (128, 128, 0), 2) # 텍스트 추가, 위치, 폰트, 크기, 색상, 두께

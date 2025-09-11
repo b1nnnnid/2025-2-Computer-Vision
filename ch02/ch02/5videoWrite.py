@@ -1,4 +1,5 @@
 import cv2
+import sys
 
 cap = cv2.VideoCapture('../data/slow_traffic_small.mp4')    # 비디오 파일
 #cap = cv2.VideoCapture(0,cv2.CAP_DSHOW)    # 웹캠 비디오
@@ -13,6 +14,11 @@ fps = cap.get(cv2.CAP_PROP_FPS) # 프레임 속도(FPS) 얻기
 print('fps =', fps)
 
 fourcc = cv2.VideoWriter_fourcc(*'XVID')        # 비디오 코덱 지정(XVID)
+#fourcc = cv2.VideoWriter_fourcc(*'DIVX')        # 비디오 코덱 지정(DIVX)
+#fourcc = cv2.VideoWriter_fourcc(*'MJPG')        # 비디오 코덱 지정(MJPG)
+#fourcc = cv2.VideoWriter_fourcc(*'X264')        # 비디오 코덱 지정(X264)
+#fourcc = cv2.VideoWriter_fourcc(*'MP4V')        # 비디오 코덱 지정(MP4V)
+
 outV = cv2.VideoWriter('./record.mp4', fourcc, fps, frame_size) # 비디오 저장 객체 생성
 
 while True :	# 무한 반복으로 비디오 프레임 처리

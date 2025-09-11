@@ -15,7 +15,7 @@ cv2.imshow('Original Image', img)
 grayImg = cv2.imread(img_path,  cv2.IMREAD_GRAYSCALE)  # 1) 직접 그레이로 읽는 방법
 grayImg = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # 2) 컬러 이미지를 그레이로 변환
 cv2.imshow('GrayImage', grayImg) # 그레이 이미지 보여주기
- 
+
 # 2 컬러 모델 변환
 hsvImg = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)   # BGR 이미지를 HSV 값으로 변환
 ycrcbImg = cv2.cvtColor(img, cv2.COLOR_BGR2YCrCb) # BGR 이미지를 YCrCb 값으로 변환
