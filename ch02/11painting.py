@@ -32,3 +32,7 @@ while(True) :		# 마우스 이벤트가 언제 발생할지 모르므로 무한 
         #        cv2.imwrite('painting.png', img) # 지금까지 그린 것을 이미지로 저장
         cv2.destroyAllWindows() 
         break
+    
+    
+    
+    #과제 1
