@@ -7,14 +7,18 @@ if img is None :
     sys.exit('파일을 찾을 수 없습니다.')
 cv2.imshow('original image - color', img)
 
-#1 컬러이미지 반전
+#1 컬러이미지 반전(선형 연산)
 img_reverse_color = cv2.subtract(255, img)
 cv2.imshow("reverse_color", img_reverse_color)
 
 #2 비선형 연산 : 감마연산
 f = img / 255     # 감마 지수 계산을 위해 픽셀값을 0 ~ 1 사이 실수로 변환
-img_gamma05 = np.uint8(255 * (f ** 0.5)) # 감마 연산 
-cv2.putText(img_gamma05, "gamma=0.5", (20,30), cv2.FONT_HERSHEY_PLAIN, 1.5, (255,0,255), 2)
+#감마 값이 작을 수록(1.0보다) 위로 볼록 그래프(어두운 색 대비 크게/밝아짐)
+#감마 값이 클수록 아래로 볼록(밝은 색 대비 크게/어두워짐)
+
+
+img_gamma05 = np.uint8(255 * (f ** 0.5)) # 감마 연산 (지수 승), img_gamma(0~255)...이미지 출력 위해 다시 255 곱해줌
+cv2.putText(img_gamma05, "gamma=0.5", (20,30), cv2.FONT_HERSHEY_PLAIN, 1.5, (255,0,255), 2) # 이미지에 텍스트 추가
 img_gamma075 = np.uint8(255 * (f ** 0.75))
 cv2.putText(img_gamma075, "gamma=0.75", (20,30), cv2.FONT_HERSHEY_PLAIN, 1.5, (255,0,255), 2)
 img_gamma10 = np.uint8(255 * (f ** 1.0))
