@@ -1,4 +1,24 @@
 data/
-*.mp4
-*.jpg
-*.png
+
+*.mp4 
+*.avi 
+*.mkv 
+*.mov 
+*.wmv 
+*.flv 
+*.webm 
+*.mpg 
+*.mpeg 
+*.m4v 
+*.jpg 
+*.jpeg 
+*.png 
+*.bmp 
+*.tiff 
+*.tif 
+*.gif 
+*.webp 
+*.heic 
+*.heif
+
+# 데이터 파일 업로드 방지

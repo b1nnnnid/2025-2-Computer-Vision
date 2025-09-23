@@ -1,4 +1,8 @@
+#-- 0923
+
 import cv2
+
+# 범위 이진화 알고리즘... 임계값 2개 사용 inRange(t1, t2)
 
 # 1. 손 이미지에서 피부색 영역 추출
 src1 = cv2.imread('../data/hand.jpg')  # 손 이미지 읽기
@@ -9,8 +13,8 @@ dst1 = cv2.inRange(hsv1, lowerb1, upperb1)  # 피부색 범위에 해당하는 �
 cv2.imshow('hands', dst1)  # 마스크 이미지 표시
 
 # 1-1. 마스크로 피부색 영역만 컬러로 추출
-#dst_skin = cv2.bitwise_and(src1, src1, mask=dst1)
-#cv2.imshow('hands - skin', dst_skin)
+dst_skin = cv2.bitwise_and(src1, src1, mask=dst1)
+cv2.imshow('hands - skin', dst_skin)
 
 # 2. 꽃 이미지에서 특정 색상 영역 추출
 src2 = cv2.imread('../data/flower.jpg')  # 꽃 이미지 읽기
@@ -21,8 +25,8 @@ dst2 = cv2.inRange(hsv2, lowerb2, upperb2)  # 꽃색 범위에 해당하는 마�
 cv2.imshow('flower', dst2)  # 마스크 이미지 표시
 
 # 2-1. 마스크로 꽃색 영역만 컬러로 추출
-#dst_flower = cv2.bitwise_and(src2, src2, mask=dst2)
-#cv2.imshow('flower - color', dst_flower)
+dst_flower = cv2.bitwise_and(src2, src2, mask=dst2)
+cv2.imshow('flower - color', dst_flower)
 
 cv2.waitKey()
 cv2.destroyAllWindows()

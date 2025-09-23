@@ -1,9 +1,11 @@
+#-- 0923
+
 import cv2
 import numpy as np
 
 gray=cv2.imread('../data/puzzle_scan.png', cv2.IMREAD_GRAYSCALE) # BGR 컬러 영상을 명암 영상으로 변환하여 저장
 
-# 1. 전역 threshold 값 적용 : 1개의 threshold 값을 모든 픽셀에 적용
+# 1. 전역 threshold 값 적용 : 1개의 threshold 값을 모든 픽셀에 적용... 어떤 값으로도 정확한 이진화가 힘든 경우우
 ret, img_binary50 = cv2.threshold(gray, 50, 255, cv2.THRESH_BINARY)     # 임계값 50
 cv2.putText(img_binary50,"BINARY-50",(20,30),cv2.FONT_HERSHEY_PLAIN,1.5, 0, 2)
 
@@ -16,12 +18,13 @@ cv2.putText(img_binary200,"BINARY-200",(20,30),cv2.FONT_HERSHEY_PLAIN,1.5, 255, 
 img_binary=np.hstack((gray,img_binary50, img_binary100, img_binary200))
 cv2.imshow('threshold',img_binary)
 
-# 2. Adaptive threshold : 각 픽셀마다 다른 threshold 값을 계산하여 적용
-#img_adaptive1 = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 51, 7) # 평균값 기반
-#img_adaptive2 = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 51, 7) # 가우시안 기반
+# 2. Adaptive threshold : 각 픽셀마다 다른 threshold 값을 계산하여 적용... 픽셀 중심 n*n 블록의 밝기 평균
+# 이 경우 임계치는 binary 또는 binary_inv 사용
+img_adaptive1 = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 51, 7) # 평균값 기반
+img_adaptive2 = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 51, 7) # 가우시안 기반
 
-#img_adaptive=np.hstack((gray,img_adaptive1,img_adaptive2))
-#cv2.imshow('adaptive threshold',img_adaptive)
+img_adaptive=np.hstack((gray,img_adaptive1,img_adaptive2))
+cv2.imshow('adaptive threshold',img_adaptive)
 
 cv2.waitKey()
 cv2.destroyAllWindows()

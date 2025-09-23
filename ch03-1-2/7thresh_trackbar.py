@@ -1,3 +1,4 @@
+#-- 0923
 import cv2
 import sys
 import numpy as np
@@ -9,7 +10,9 @@ def onChange(value):               # 트랙바 콜백 함수, value는 트랙바
     ret, img_thresh = cv2.threshold(gray, th, 255, cv2.THRESH_BINARY)   # 임계값으로 이진화
     cv2.imshow(title, img_thresh) # 이진화된 이미지 표시
 
-gray = cv2.imread('../data/lenna512.png', cv2.IMREAD_GRAYSCALE) # BGR 컬러 영상을 명암 영상으로 변환하여 저장
+#gray = cv2.imread('../data/lenna512.png', cv2.IMREAD_GRAYSCALE) # BGR 컬러 영상을 명암 영상으로 변환하여 저장
+gray= cv2.imread('../data/puzzle_scan.png', cv2.IMREAD_GRAYSCALE)
+
 if gray is None :
     sys.exit('파일을 찾을 수 없습니다.')
 
