@@ -1,3 +1,5 @@
+#-- 0925
+
 import cv2
 import sys
 import matplotlib.pyplot as plt
@@ -14,14 +16,14 @@ if img is None:
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)		    # 명암 영상으로 변환하고 출력
 ax1 = fig.add_subplot(rows, cols, 1)    # 첫 번째 subplot으로 fig에 추가
 ax1.axis("off")	# 축 숨기기 (일반적으로 이미지 표시할 때 축 숨김)
-ax1.imshow(gray, cmap='gray')
+ax1.imshow(gray, cmap='gray') #cmap: colormap
 
 h1 = cv2.calcHist([gray], [0], None, [256], [0, 256])	    # 히스토그램을 구해 출력
 #print('원본 히스토그램 : ', h1)
 ax2 = fig.add_subplot(rows, cols, 2)    # 두 번째 subplot으로 fig에 추가
 ax2.plot(h1, color='r', linewidth=1)
 
-equal = cv2.equalizeHist(gray)			            # 히스토그램을 평활화하고 출력
+equal = cv2.equalizeHist(gray)			            # 히스토그램을 평활화하고 출력...색 분포를 고르게 조작해 이미지 명암 대비 높임
 ax3 = fig.add_subplot(rows, cols, 3)    # 세 번째 subplot으로 fig에 추가
 ax3.axis("off")	# 축 숨기기 (일반적으로 이미지 표시할 때 축 숨김)
 ax3.imshow(equal, cmap='gray')

@@ -1,3 +1,5 @@
+#-- 0925
+
 import cv2
 import sys
 import matplotlib.pyplot as plt
@@ -7,7 +9,7 @@ gray = cv2.imread('../data/soccer.jpg', cv2.IMREAD_GRAYSCALE)  # gray 이미지
 if gray is None:
     sys.exit('파일을 찾을 수 없습니다.')
 
-# 오츄 알고리즘을 이용해 최적 임계값 자동 계산 및 이진화
+# 오츄 알고리즘을 이용해 최적 임계값 자동 계산 및 이진화...threshold 함수에 타입 태그를 설정
 t, bin_gray = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 print('오츄 알고리즘이 찾은 최적 임계값=', t)
 

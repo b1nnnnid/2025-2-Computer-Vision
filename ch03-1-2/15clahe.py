@@ -1,6 +1,10 @@
+#-- 0925
+
 import cv2
 import sys
 import matplotlib.pyplot as plt
+
+#적응적 히스토그램 평활화...대비 제한해 보다 자연스럽게 평활화
 
 fig = plt.figure()  # plot 창 생성
 rows = 3  # plot에 포함될 subplot 행 개수

@@ -1,3 +1,5 @@
+#-- 0925
+
 import cv2
 import sys
 import numpy as np
@@ -10,7 +12,7 @@ if img is None:
 
 cv2.imshow('Color image', img)
 
-# BGR 각 채널의 히스토그램 계산 및 표시
+# BGR 각 채널의 히스토그램 계산 및 표시...컬러는 바이트별로 
 h_r = cv2.calcHist([img], [2], None, [256], [0, 256]) # 2번 채널인 R 채널에서 히스토그램 구함
 plt.plot(h_r, color='r', linewidth=1)             # linestyle='solid'
 
