@@ -1,14 +1,16 @@
+# -1002
+
 import cv2
 import numpy as np
 
-gray = cv2.imread('../data/lenna256.png', cv2.IMREAD_GRAYSCALE)
+#gray = cv2.imread('../data/lenna256.png', cv2.IMREAD_GRAYSCALE)
 #gray = cv2.imread('../data/coins.png', cv2.IMREAD_GRAYSCALE)
-#gray = cv2.imread('../data/check.png', cv2.IMREAD_GRAYSCALE)
+gray = cv2.imread('../data/check.png', cv2.IMREAD_GRAYSCALE)
 
 blur = cv2.blur(gray, (3, 3))  # 에지 검출의 전처리과정 : 스무딩, 잡음 제거
 
-# 1차 미분 : Prewitt
-prewitt_filter_x = np.array([[1, 0, -1], [1, 0, -1], [1, 0, -1]])   # 수직 에지 필터
+# 1차 미분 : Prewitt(에지 검출 필터)
+prewitt_filter_x = np.array([[1, 0, -1], [1, 0, -1], [1, 0, -1]])   # 수직 에지 필터...x가 수직임 주의!!
 prewitt_filter_y = np.array([[-1, -1, -1], [0, 0, 0], [1, 1, 1]])   # 수평 에지 필터
 
 prewitt_grad_x = cv2.filter2D(blur, -1, prewitt_filter_x) # 수직 에지 필터 적용
