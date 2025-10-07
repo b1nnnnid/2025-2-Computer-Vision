@@ -1,9 +1,11 @@
+# -1007
+
 import cv2
 import numpy as np
 
 color=cv2.imread('../data/lenna256.png')
 
-# Special effects
+# Special effects...에지보존필터
 bila = cv2.bilateralFilter(color, d=9, sigmaColor=75, sigmaSpace=75)  # 양방향 필터(노이즈 제거, 경계 보존)
 
 edgep = cv2.edgePreservingFilter(color, flags=1, sigma_s=60, sigma_r=0.4)  # 경계 보존 필터
