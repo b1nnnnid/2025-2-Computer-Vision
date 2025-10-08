@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h4> 컴퓨터비전기초 2025-2 </h4>
+        </div>
+        <div class="card-body">
+            <form id="upload-file" action="/img_result" method="POST" enctype="multipart/form-data">
+                <h5 class="card-title">Upload Image</h5>
+                <p class="card-text">
+                    <input type="file" id="file" name="file">
+                </p>
+                <br>
+                <h5 class="card-title">Image Processing Options</h5>
+                <p>
+                    <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref" name="style">
+                        <option selected>Choose...</option>
+                        <optgroup label="점(픽셀) 처리">
+                            <option value="Otsu">Otsu Thresholding</option>
+                            <option value="Equalization">Histogram Equalization</option>
+                            <option value="CLAHE">CLAHE</option>
+                        </optgroup>
+                        <optgroup label="영역(이웃) 처리">
+                            <option value="Gaussian">Gaussian Blur</option>
+                            <option value="Sharpening">Sharpening</option>
+                            <option value="Bilateral">Bilateral</option>
+                            <option value="Edge Preserving">Edge Preserving</option>
+                            <option value="Style">Style</option>
+
+                        </optgroup>
+                        <optgroup label="기하학적 처리">
+
+                        </optgroup>
+                    </select>
+                    <input type="submit" class="btn btn-primary " name="submit" value="Processing">
+                </p>
+            </form>
+        </div>
+    </div>
+{% endblock %}

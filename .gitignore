@@ -22,3 +22,6 @@ data/
 *.heif
 
 # 데이터 파일 업로드 방지
+
+.venv
+/__pycache__
