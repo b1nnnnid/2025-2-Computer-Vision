@@ -1,10 +1,12 @@
+# -1016
+
 import cv2
 import numpy as np
 
 img = cv2.imread('../data/rose.png')
-cv2.imshow('Original', img)
 
 img = cv2.rectangle(img, (180, 290), (220, 330), (255, 0, 0), 2)
+cv2.imshow('Original', img)
 patch = img[290:330, 180:220, :]
 
 # 1) 확대
@@ -23,7 +25,7 @@ img_small2 = cv2.resize(img, dsize=(0, 0), fx=0.25, fy=0.25)  # 1/4로 축소, �
 img_small3 = cv2.resize(img, dsize=(0, 0), fx=0.25, fy=0.25, interpolation=cv2.INTER_AREA)  # 1/4로 축소
 
 dst2 = np.hstack((img_small1, img_small2, img_small3))
-#cv2.imshow('Resize - zoomout',dst2)
+cv2.imshow('Resize - zoomout',dst2)
 
 cv2.waitKey()
 cv2.destroyAllWindows()

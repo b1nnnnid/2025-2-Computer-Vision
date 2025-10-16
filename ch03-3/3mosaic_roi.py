@@ -1,3 +1,4 @@
+# - 1016
 import cv2
 
 img = cv2.imread('../data/bts.jpg')
@@ -18,7 +19,7 @@ ksize = 15  # 홀수만 가능
 
 # 2) 크기 변환을 이용한 모자익(ch03-3)
 roi = cv2.resize(roi,(w//ksize,h//ksize))           # 축소# 축소 후
-roi = cv2.resize(roi, (w,h), interpolation=cv2.INTER_NEAREST)   # 확대
+roi = cv2.resize(roi, (w,h), interpolation=cv2.INTER_NEAREST)   # 확대...격자 극대화(다른 보간법도 부드러운 블러 가능능)
 
 img[y:y+h, x:x+w] = roi  # 원본 이미지에 적용
 

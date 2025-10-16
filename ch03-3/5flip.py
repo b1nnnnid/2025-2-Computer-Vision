@@ -1,3 +1,5 @@
+# -1016
+
 import cv2
 import numpy as np
 
@@ -33,7 +35,7 @@ cv2.imshow('Symmetry', img_symmetry)
 
 # 2) openCV 함수 : flip
 img_symmetry2 = np.vstack((img, cv2.flip(img, 1), cv2.flip(img, 0), cv2.flip(img, -1)))
-#cv2.imshow('Symmetry - flip', img_symmetry2)
+cv2.imshow('Symmetry - flip', img_symmetry2)
 
 cv2.waitKey()
 cv2.destroyAllWindows()
