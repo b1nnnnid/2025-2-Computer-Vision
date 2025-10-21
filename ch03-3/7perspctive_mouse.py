@@ -1,4 +1,4 @@
-# -1016
+# -1016 ~ 1021
 
 import cv2 
 import numpy as np
@@ -11,7 +11,7 @@ def draw_rect(img) : # 각 점 주변에 사각형을 그리고, 선택된 영�
     for (x, y), (w, h) in np.int32(rois):
         roi = img[y:y + h, x:x + w]  # 좌표 사각형 범위 가져오기
         val = np.full(roi.shape, 80, np.uint8)  # 컬러(3차원) 행렬 생성
-        cv2.add(roi, val, roi)           # 관심영역 밝기 증가
+        cv2.add(roi, val, roi)           # 관심영역 밝기 증가...80만큼
         cv2.rectangle(img, (x, y, w, h), (255, 0, 255), 2)
     cv2.polylines(img, [pts1.astype(int)], True, (255, 255, 0), 2)  # pts(numpy 배열) 4개 점 연결
     cv2.imshow("select rect", img)
@@ -41,6 +41,7 @@ image = cv2.imread('../data/perspective2.jpg')
 
 small = np.array((12, 12))  # 좌표 사각형 크기
 check = -1  # 선택 좌표 사각형 번호 초기화
+#각 쌍들이 대응됨
 pts1 = np.float32([(100, 100), (300, 100), (300, 300), (100, 300)]) # 입력 이미지의 4개 점 좌표
 pts2 = np.float32([(0, 0), (399, 0), (399, 349), (0, 349)]) # 출력 이미지의 4개 점 좌표
 
