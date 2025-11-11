@@ -2,8 +2,6 @@ import cv2
 import sys
 import numpy as np
 
-# 이미지 파일을 '1.png'로 저장했다고 가정합니다.
-# 경로가 다르다면 '../data/1.png'를 실제 파일 경로로 수정하세요.
 img = cv2.imread('../data/1.png') 
 if img is None:
     sys.exit('파일을 찾을 수 없습니다. (1.png)')
