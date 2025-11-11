@@ -1,7 +1,9 @@
+# - 1111
+
 import cv2
 import sys
 import numpy as np
-import seam_carving # 설치 : pip install seam-carving
+import seam_carving
 
 img = cv2.imread('../data/beach.jpg')
 if img is None :
@@ -56,8 +58,8 @@ cv2.imshow('Seam Carving - resizing h-', img_carved2)
 padding2 = np.full((8, w, c), 255, dtype=np.uint8)
 img_carved3 = np.vstack((img, padding2, cv2.resize(img,dsize=(w,h+200)), padding2, dst3))
 img_carved4 = np.vstack((img, padding2, cv2.resize(img,dsize=(w,h-200)), padding2, dst4))
-#cv2.imshow('Seam Carving - resizing v+', img_carved3)
-#cv2.imshow('Seam Carving - resizing v-', img_carved4)
+cv2.imshow('Seam Carving - resizing v+', img_carved3)
+cv2.imshow('Seam Carving - resizing v-', img_carved4)
 
 cv2.waitKey()
 cv2.destroyAllWindows()

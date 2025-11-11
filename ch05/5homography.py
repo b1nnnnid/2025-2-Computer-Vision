@@ -1,9 +1,13 @@
+# - 1111
+
 import cv2
 import numpy as np
 
-img1 = cv2.imread('../data/mot_color70.jpg')[190:350, 440:560]  # 버스를 크롭한 이미지 : 검색 이미지로 사용
+#img1 = cv2.imread('../data/mot_color70.jpg')[190:350, 440:560]  # 버스를 크롭한 이미지 : 검색 이미지로 사용
+img1 = cv2.imread('../data/books/book_c.jpg')
 gray1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
-img2 = cv2.imread('../data/mot_color83.jpg')  # 장면 이미지
+#img2 = cv2.imread('../data/mot_color83.jpg')  # 장면 이미지
+img2 = cv2.imread('../data/books/books.jpg')
 gray2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
 
 sift = cv2.SIFT_create()
