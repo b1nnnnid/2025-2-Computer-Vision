@@ -25,9 +25,9 @@ else:
 
 display_img = resized_img.copy() # 검출용 복사 이미지
 
-# --- 원 검출 (수정하지 않는 부분) ---
+# 그레이 이미지
 gray = cv2.cvtColor(resized_img, cv2.COLOR_BGR2GRAY)
-blur = cv2.medianBlur(gray, 5) # 노이즈 제거(중앙값 블러)
+blur = cv2.GaussianBlur(gray, (5,5), 1) # 노이즈 제거(가우시안 블러)
 
 # 원 검출 (HoughCircles)
 circles = cv2.HoughCircles(blur, cv2.HOUGH_GRADIENT, 1, 100, param1=150, param2=50, minRadius=100, maxRadius=150)
@@ -35,44 +35,28 @@ circles = cv2.HoughCircles(blur, cv2.HOUGH_GRADIENT, 1, 100, param1=150, param2=
 if circles is not None:
     circles = np.uint16(np.around(circles))
     for i in circles[0, :]:
-        # 검출한 원 그리기
-        cv2.circle(display_img, (i[0], i[1]), i[2], (0, 255, 0), 2)
+        # 검출한 원 그리기(중심 표시)
+        cv2.circle(display_img, (i[0], i[1]), i[2], (0, 255, 0), 3)
         cv2.circle(display_img, (i[0], i[1]), 2, (0, 0, 255), 3)
 
-# --- 사각형 검출 (수정된 부분) ---
+#사각형 검출
+# 히스토그램 평활화
+clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(9, 9)) 
+clahe_img = clahe.apply(gray)
+# 블러: 중앙값, 가우시안
+blur_rec = cv2.medianBlur(clahe_img, 5)
+blur_rec2 = cv2.GaussianBlur(blur_rec, (7, 7), 10) 
+# 캐니 에지 검출
+edges = cv2.Canny(blur_rec2, 50, 300)
 
-# 1. 색상 필터링 (검은색 추출)
-hsv = cv2.cvtColor(resized_img, cv2.COLOR_BGR2HSV)
-lower_black = np.array([0, 0, 0])
-upper_black = np.array([180, 20, 150])
-mask_black = cv2.inRange(hsv, lower_black, upper_black)
+# 허프 선 검출(HoughLinesP)
+lines = cv2.HoughLinesP(edges, 1, np.pi/180, 50, minLineLength=80, maxLineGap=20)
+print(lines)
 
-# (디버깅용) 검은색 마스크 확인
-cv2.imshow("1. Black Mask", mask_black)
-
-# 3. 엣지 검출
-edges = cv2.Canny(mask_black, 100, 200)
-
-# (디버깅용) 엣지 이미지 확인
-cv2.imshow("3. Edges", edges)
-
-# 4. 허프 라인 (HoughLinesP) 검출
-# 'edges'는 이제 사각형 테두리의 엣지만을 가질 확률이 높습니다.
-lines = cv2.HoughLinesP(
-    edges, 
-    rho=1, 
-    theta=np.pi/180, 
-    threshold=120, 
-    minLineLength=80,  # 사각형 변의 최소 길이
-    maxLineGap=15
-)
-
-# 5. 검출된 선 그리기
-if lines is not None:
-    for line in lines:
-        x1, y1, x2, y2 = line[0]
-        # 원본 이미지 위에 빨간색(0,0,255)으로 선분을 그립니다.
-        cv2.line(display_img, (x1, y1), (x2, y2), (0, 0, 255), 2)
+# 검출선 그리기(사각형)
+for line in lines:             
+    x1, y1, x2, y2 = line[0]          
+    cv2.line(display_img, (x1,y1), (x2, y2), (0,255,0), 3)  
 
 # 최종 결과 이미지 표시
 cv2.imshow("Detected Circles and Rectangle", display_img)

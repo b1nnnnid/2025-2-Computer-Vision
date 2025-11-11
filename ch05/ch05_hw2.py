@@ -34,7 +34,7 @@ if circles is not None:
     circles = np.uint16(np.around(circles))
     for i in circles[0, :]:
         # 검출한 원 그리기
-        cv2.circle(display_img, (i[0], i[1]), i[2], (0, 255, 0), 2)
+        cv2.circle(display_img, (i[0], i[1]), i[2], (0, 255, 0), 3)
         cv2.circle(display_img, (i[0], i[1]), 2, (0, 0, 255), 3)
         
         
@@ -56,17 +56,14 @@ red_mask = cv2.morphologyEx(red_mask, cv2.MORPH_CLOSE, kernel, iterations=1)
 # Canny 에지 적용 
 edges_from_mask = cv2.Canny(red_mask, 50, 150)
 
-
 # 허프 라인 변환 (Hough Lines)
 lines = cv2.HoughLinesP(edges_from_mask, 1, np.pi / 180, threshold=20, minLineLength=20, maxLineGap=10)
-
 
 # 선 그리기
 if lines is not None:
     for line in lines:
         x1, y1, x2, y2 = line[0]
-        cv2.line(display_img, (x1, y1), (x2, y2), (0, 255, 0), 2)
-
+        cv2.line(display_img, (x1, y1), (x2, y2), (0, 255, 0), 3)
             
 # 결과 출력
 cv2.imshow('Detecting Circles and Triangles', display_img)
