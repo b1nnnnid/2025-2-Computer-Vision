@@ -61,60 +61,38 @@ if circles is not None:
         cv2.circle(display_img, (i[0], i[1]), 2, (0, 0, 255), 3)   
         
 
-# --- 삼각형 검출: 색 기반 모폴로지지
+# 삼각형 검출
+# 빨간색 테두리 검출 (색상 필터링)
 hsv = cv2.cvtColor(resized_img, cv2.COLOR_BGR2HSV)
-
-# 빨간 색 범위: HSV에서 두 구간으로 나눠 처리 
-lower_red1 = np.array([0, 80, 50])
+lower_red1 = np.array([0, 120, 70])
 upper_red1 = np.array([10, 255, 255])
-lower_red2 = np.array([160, 80, 50])
-upper_red2 = np.array([180, 255, 255])
-
 mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
+lower_red2 = np.array([170, 120, 70])
+upper_red2 = np.array([180, 255, 255])
 mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
 red_mask = cv2.bitwise_or(mask1, mask2)
 
-# 모폴로지: 닫힘으로 테두리 잡음 메우고 외곽 연결
-kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (9,9))
-red_closed = cv2.morphologyEx(red_mask, cv2.MORPH_CLOSE, kernel, iterations=2)
-red_closed = cv2.dilate(red_closed, kernel, iterations=1)
+# 노이즈 제거용 모폴로지(닫힘)
+kernel = np.ones((3, 3), np.uint8) 
+red_mask = cv2.morphologyEx(red_mask, cv2.MORPH_CLOSE, kernel, iterations=1)
 
-# 작은 노이즈 제거
-red_closed = cv2.medianBlur(red_closed, 5)
 
-# 외곽선 찾기
-contours, _ = cv2.findContours(red_closed, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+# Canny 에지 적용 
+edges_from_mask = cv2.Canny(red_mask, 50, 150)
 
-for contour in contours:
-    area = cv2.contourArea(contour)
-    if area < 1500:   # 표지판 경계는 충분히 큰 면적이므로 임계값을 높게 잡음
-        continue
 
-    # 근사화
-    epsilon = 0.02 * cv2.arcLength(contour, True)
-    approx = cv2.approxPolyDP(contour, epsilon, True)
-    num_vertices = len(approx)
+# 허프 라인 변환 (Hough Lines)
+lines = cv2.HoughLinesP(edges_from_mask, 1, np.pi / 180, threshold=50, minLineLength=40, maxLineGap=10)
 
-    x, y, w, h = cv2.boundingRect(approx)
-    if w < 60 or h < 60:
-        continue
 
-    aspect_ratio = float(w) / (h + 1e-6)
+# 선 그리기
+if lines is not None:
+    for line in lines:
+        x1, y1, x2, y2 = line[0]
+        cv2.line(display_img, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
-    # 위치 필터 완화: 상단 60% 까지 허용 
-    if y > resized_img.shape[0] * 0.6:
-        continue
-
-    # 꼭짓점 세기, 비율
-    if num_vertices== 3 and 0.4 < aspect_ratio < 1.6:
-        # 외곽 그리기 (파란색)
-        cv2.drawContours(display_img, [approx], 0, (255, 0, 0), 3)
-        for point in approx:
-            px, py = point[0]
-            cv2.circle(display_img, (px, py), 6, (0,255,255), -1)
-        
-
+            
 # 결과 출력
-cv2.imshow('Traffic Sign Detection', display_img)
+cv2.imshow('Detecting Circles and Triangles', display_img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

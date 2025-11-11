@@ -37,47 +37,38 @@ if circles is not None:
         cv2.circle(display_img, (i[0], i[1]), i[2], (0, 255, 0), 2)
         cv2.circle(display_img, (i[0], i[1]), 2, (0, 0, 255), 3)
         
-# --- 삼각형 검출 (Contours) ---
-
-# Canny 에지 검출
-edges = cv2.Canny(gray, 30, 100, apertureSize=3)
-
-# 컨투어 찾기
-contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-for contour in contours:
-    area = cv2.contourArea(contour)
-    # 너무 작은 컨투어 무시 
-    if area < 3000: 
-        continue
-
-    # 컨투어 근사화
-    epsilon = 0.03 * cv2.arcLength(contour, True) 
-    approx = cv2.approxPolyDP(contour, epsilon, True)
-
-    num_corners = len(approx)
-    
-    # 1. 꼭짓점 개수 확인
-    if num_corners == 3:
-        x, y, w, h = cv2.boundingRect(approx)
-        aspect_ratio = float(w) / h
         
-        # 2. 정삼각형에 가까운 비율
-        if 0.8 < aspect_ratio < 1.3:
+# 삼각형 검출
+# 빨간색 테두리 검출 (색상 필터링)
+hsv = cv2.cvtColor(resized_img, cv2.COLOR_BGR2HSV)
+lower_red1 = np.array([0, 120, 70])
+upper_red1 = np.array([10, 255, 255])
+mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
+lower_red2 = np.array([170, 120, 70])
+upper_red2 = np.array([180, 255, 255])
+mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
+red_mask = cv2.bitwise_or(mask1, mask2)
+
+# 노이즈 제거용 모폴로지(닫힘)
+kernel = np.ones((3, 3), np.uint8) 
+red_mask = cv2.morphologyEx(red_mask, cv2.MORPH_CLOSE, kernel, iterations=1)
+
+# Canny 에지 적용 
+edges_from_mask = cv2.Canny(red_mask, 50, 150)
+
+
+# 허프 라인 변환 (Hough Lines)
+lines = cv2.HoughLinesP(edges_from_mask, 1, np.pi / 180, threshold=20, minLineLength=20, maxLineGap=10)
+
+
+# 선 그리기
+if lines is not None:
+    for line in lines:
+        x1, y1, x2, y2 = line[0]
+        cv2.line(display_img, (x1, y1), (x2, y2), (0, 255, 0), 2)
+
             
-            # 3. 위치 조건...대략적 위치치
-            if x > resized_img.shape[1] * 0.4 and y < resized_img.shape[0] * 0.5:
-                
-                # 검출된 삼각형 외곽선 그리기 (파란색)
-                cv2.drawContours(display_img, [approx], 0, (255, 0, 0), 3)
-                
-                # 4. 꼭짓점 위치 표시 (노란색)
-                for point in approx:
-                    px, py = point[0]
-                    cv2.circle(display_img, (px, py), 7, (0, 255, 255), -1)
-        
-        
 # 결과 출력
-cv2.imshow('Hough Lines Rectangles and Triangles', display_img)
+cv2.imshow('Detecting Circles and Triangles', display_img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
